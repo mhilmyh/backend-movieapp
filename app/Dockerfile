@@ -1,6 +1,6 @@
 FROM golang:1.17-alpine
 
-WORKDIR /backend
+WORKDIR /app
 
 COPY go.mod ./
 COPY go.sum ./
@@ -9,6 +9,6 @@ RUN go mod download
 
 COPY *.go ./
 
-RUN go build -o /backend-movieapp
+RUN go build -o /movieapp
 
-CMD [ "/backend-movieapp" ]
+CMD [ "/movieapp" ]

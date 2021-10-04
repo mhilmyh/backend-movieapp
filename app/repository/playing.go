@@ -16,16 +16,19 @@ type playingRepository struct {
 	db *gorm.DB
 }
 
-func (mr *playingRepository) Get() (p []entity.Playing, err error) {
-	return p, nil
+func (pr *playingRepository) Get() (p []entity.Playing, err error) {
+	err = pr.db.Find(&p).Error
+	return p, err
 }
 
-func (mr *playingRepository) Create(p *entity.Playing) (err error) {
-	return nil
+func (pr *playingRepository) Create(p *entity.Playing) (err error) {
+	err = pr.db.Create(&p).Error
+	return err
 }
 
-func (mr *playingRepository) Delete(id int) (err error) {
-	return nil
+func (pr *playingRepository) Delete(id int) (err error) {
+	err = pr.db.Delete(&entity.Playing{}, id).Error
+	return err
 }
 
 func NewPlayingRepository(db *gorm.DB) PlayingRepository {

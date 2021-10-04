@@ -16,16 +16,19 @@ type viewerRepository struct {
 	db *gorm.DB
 }
 
-func (mr *viewerRepository) Get() (v []entity.Viewer, err error) {
-	return v, nil
+func (vr *viewerRepository) Get() (v []entity.Viewer, err error) {
+	err = vr.db.Find(&v).Error
+	return v, err
 }
 
-func (mr *viewerRepository) Create(v *entity.Viewer) (err error) {
-	return nil
+func (vr *viewerRepository) Create(v *entity.Viewer) (err error) {
+	err = vr.db.Create(&v).Error
+	return err
 }
 
-func (mr *viewerRepository) Delete(id int) (err error){
-	return nil	
+func (vr *viewerRepository) Delete(id int) (err error){
+	err = vr.db.Delete(&entity.Viewer{}, id).Error
+	return err	
 }
 
 func NewViewerRepository(db *gorm.DB) ViewerRepository {

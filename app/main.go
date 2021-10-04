@@ -1,7 +1,7 @@
 package main
 
 import (
-	"movieapp/server"
+	"app/server"
 
 	"github.com/gin-gonic/gin"
 )

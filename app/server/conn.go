@@ -1,8 +1,8 @@
 package server
 
 import (
-	"movieapp/db"
-	"movieapp/entity"
+	"app/db"
+	"app/entity"
 
 	"gorm.io/gorm"
 )

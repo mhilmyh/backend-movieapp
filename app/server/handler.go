@@ -1,8 +1,8 @@
 package server
 
 import (
-	"movieapp/entity"
-	"movieapp/repository"
+	"app/entity"
+	"app/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

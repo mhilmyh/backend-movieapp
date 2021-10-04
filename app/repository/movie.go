@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"movieapp/entity"
+	"app/entity"
 
 	"gorm.io/gorm"
 )

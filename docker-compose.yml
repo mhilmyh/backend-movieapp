@@ -6,7 +6,6 @@ services:
     depends_on:
       - db
       - redis
-      - nsqd
     ports:
       - 9000:9000
   db:

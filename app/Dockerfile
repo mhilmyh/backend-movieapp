@@ -4,11 +4,9 @@ WORKDIR /go/src/app
 
 COPY go.mod ./
 COPY go.sum ./
+COPY . .
 
 RUN go mod download
-
-COPY *.go ./
-
-RUN go build -o /app
+RUN go build -o /app main.go
 
 CMD [ "/app" ]

@@ -7,6 +7,8 @@ type Playing struct {
 	Price	int64
 	Start	string
 	End	string
+	MovieID int
 	Movie Movie
+	ViewerID int
 	Viewer Viewer
 }

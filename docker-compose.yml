@@ -17,3 +17,8 @@ services:
       - POSTGRES_DB=moviedb
   redis:
     image: redis:alpine
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

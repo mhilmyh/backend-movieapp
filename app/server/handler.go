@@ -4,6 +4,7 @@ import (
 	"app/entity"
 	"app/repository"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -64,7 +65,13 @@ func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 }
 
 func (mh *MovieHandler) DeleteMovie(c *gin.Context) {
-	err := mh.movieRepository.Delete(0)
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	err = mh.movieRepository.Delete(id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return

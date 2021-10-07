@@ -1,7 +1,9 @@
 package server
 
 import (
+	"app/db"
 	"app/entity"
+	"app/helper"
 	"app/repository"
 	"net/http"
 	"strconv"
@@ -37,7 +39,7 @@ type MovieHandler struct {
 func (mh *MovieHandler) GetMovies(c *gin.Context) {
 	movies, err := mh.movieRepository.Get()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -45,9 +47,22 @@ func (mh *MovieHandler) GetMovies(c *gin.Context) {
 }
 
 func (mh *MovieHandler) CreateMovie(c *gin.Context) {
-	err := mh.movieRepository.Create(&entity.Movie{})
+	r, err := strconv.Atoi(c.PostForm("rating"))
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	m := entity.Movie{
+		Title: c.PostForm("title"),
+		Desc: c.PostForm("desc"),
+		Rating: int8(r),
+		Author: c.PostForm("author"),
+	}
+
+	err = mh.movieRepository.Create(&m)
+	if err != nil {
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -55,9 +70,29 @@ func (mh *MovieHandler) CreateMovie(c *gin.Context) {
 }
 
 func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
-	err := mh.movieRepository.Update(&entity.Movie{})
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	r, err := strconv.Atoi(c.PostForm("rating"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	var m entity.Movie
+	db.Instance.First(&m, id)
+
+	m.Title = c.PostForm("title")
+	m.Desc = c.PostForm("desc")
+	m.Rating = int8(r)
+	m.Author = c.PostForm("author")
+
+	err = mh.movieRepository.Update(&m)
+	if err != nil {
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -67,13 +102,13 @@ func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 func (mh *MovieHandler) DeleteMovie(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 
 	err = mh.movieRepository.Delete(id)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -87,7 +122,7 @@ type PlayingHandler struct {
 func (ph *PlayingHandler) GetPlayings(c *gin.Context) {
 	playings, err := ph.playingRepository.Get()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -95,9 +130,10 @@ func (ph *PlayingHandler) GetPlayings(c *gin.Context) {
 }
 
 func (ph *PlayingHandler) GetPlayingViewers(c *gin.Context) {
+	// TODO: fix this
 	viewers, err := ph.playingRepository.Get()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 
@@ -105,19 +141,67 @@ func (ph *PlayingHandler) GetPlayingViewers(c *gin.Context) {
 }
 
 func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
-	
+	// TODO: fix this
+	err := ph.playingRepository.Create(&entity.Playing{})
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (ph *PlayingHandler) CreatePlayingViewer(c *gin.Context) {
-	
+	// TODO: fix this
+	p, err := strconv.Atoi(c.Param("p"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	err = ph.playingRepository.CreatePlayingViewer(p, &entity.Viewer{})
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
-	
+	// TODO: fix this
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	err = ph.playingRepository.Delete(id)
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
 }
 
 func (ph *PlayingHandler) DeletePlayingViewer(c *gin.Context) {
+	// TODO: fix this
+	p, err := strconv.Atoi(c.Param("p"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
 	
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	err = ph.playingRepository.DeletePlayingViewer(p, id)
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
 }
 
 
@@ -129,7 +213,7 @@ type ViewerHandler struct {
 func (vh *ViewerHandler) GetViewers(c *gin.Context) {
 	viewers, err := vh.viewerRepository.Get()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		go helper.SendResponseError(c, err)
 		return
 	}
 

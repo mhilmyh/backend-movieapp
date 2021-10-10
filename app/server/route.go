@@ -1,11 +1,16 @@
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"app/cache"
+
+	"github.com/gin-gonic/gin"
+)
 
 
 func NewRoute(r *gin.RouterGroup)  {
-	c := NewDBConnection()
-	h := NewHandler(c)
+	db := NewDBConnection()
+	c := cache.NewRedisConnection()
+	h := NewHandler(db, c)
 
 	r.GET("/movies", h.Movie.GetMovies)
 	r.POST("/movies", h.Movie.CreateMovie)

@@ -12,5 +12,4 @@ type Playing struct {
 	Start	time.Time
 	End	time.Time
 	MovieID int
-	Movie Movie
 }

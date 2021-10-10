@@ -6,5 +6,4 @@ type Viewer struct {
 	gorm.Model
 	Name	string
 	PlayingID int
-	Playing
 }

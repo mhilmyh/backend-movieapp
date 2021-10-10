@@ -12,12 +12,11 @@ func NewRoute(r *gin.RouterGroup)  {
 	r.PUT("/movies/:id", h.Movie.UpdateMovie)
 	r.DELETE("/movies/:id", h.Movie.DeleteMovie)
 
-	r.GET("/playings/:id/viewers", h.Playing.GetPlayingViewers)
 	r.GET("/playings", h.Playing.GetPlayings)
-	r.POST("/playings/:id/viewers", h.Playing.CreatePlayingViewer)
 	r.POST("/playings", h.Playing.CreatePlaying)
-	r.DELETE("/playings/:id/viewers/:v", h.Playing.DeletePlayingViewer)
 	r.DELETE("/playings/:id", h.Playing.DeletePlaying)
 
 	r.GET("/viewers", h.Viewer.GetViewers)
+	r.POST("/viewers", h.Viewer.CreateViewer)
+	r.DELETE("/viewers/:id", h.Viewer.DeleteViewer)
 }

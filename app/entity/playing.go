@@ -13,6 +13,4 @@ type Playing struct {
 	End	time.Time
 	MovieID int
 	Movie Movie
-	ViewerID int
-	Viewer Viewer
 }

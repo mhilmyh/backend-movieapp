@@ -130,17 +130,6 @@ func (ph *PlayingHandler) GetPlayings(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"playings": playings})
 }
 
-func (ph *PlayingHandler) GetPlayingViewers(c *gin.Context) {
-	// TODO: fix this
-	viewers, err := ph.playingRepository.Get()
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"viewers": viewers})
-}
-
 func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 	price, err := strconv.Atoi(c.PostForm("price"))
 	if err != nil {
@@ -149,12 +138,6 @@ func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 	}
 
 	movieID, err := strconv.Atoi(c.PostForm("movie_id"))
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-
-	viewerID, err := strconv.Atoi(c.PostForm("viewer_id"))
 	if err != nil {
 		go helper.SendResponseError(c, err)
 		return
@@ -177,7 +160,6 @@ func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 		Start: start,
 		End: end,
 		MovieID: movieID,
-		ViewerID: viewerID,
 	}
 
 	err = ph.playingRepository.Create(&p)
@@ -187,23 +169,6 @@ func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"playing": p})
-}
-
-func (ph *PlayingHandler) CreatePlayingViewer(c *gin.Context) {
-	// TODO: fix this
-	p, err := strconv.Atoi(c.Param("p"))
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-
-	err = ph.playingRepository.CreatePlayingViewer(p, &entity.Viewer{})
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
@@ -222,27 +187,6 @@ func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{})
 }
 
-func (ph *PlayingHandler) DeletePlayingViewer(c *gin.Context) {
-	// TODO: fix this
-	p, err := strconv.Atoi(c.Param("p"))
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-	
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-
-	err = ph.playingRepository.DeletePlayingViewer(p, id)
-	if err != nil {
-		go helper.SendResponseError(c, err)
-		return
-	}
-}
-
 
 
 type ViewerHandler struct {
@@ -257,4 +201,40 @@ func (vh *ViewerHandler) GetViewers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"viewers": viewers})
+}
+
+func (vh *ViewerHandler) CreateViewer(c *gin.Context)  {
+	p, err := strconv.Atoi(c.PostForm("playing_id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	v := entity.Viewer{
+		Name: c.PostForm("name"),
+		PlayingID: p,
+	}
+	err = vh.viewerRepository.Create(&v)
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"viewers": v})
+}
+
+func (vh *ViewerHandler) DeleteViewer(c *gin.Context)  {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	err = vh.viewerRepository.Delete(id)
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }

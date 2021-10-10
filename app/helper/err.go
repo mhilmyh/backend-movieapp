@@ -8,5 +8,5 @@ import (
 
 
 func SendResponseError(c *gin.Context, err error)  {
-	c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+	c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 }

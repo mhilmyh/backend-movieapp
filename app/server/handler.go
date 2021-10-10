@@ -40,7 +40,7 @@ type MovieHandler struct {
 func (mh *MovieHandler) GetMovies(c *gin.Context) {
 	movies, err := mh.movieRepository.Get()
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -50,7 +50,7 @@ func (mh *MovieHandler) GetMovies(c *gin.Context) {
 func (mh *MovieHandler) CreateMovie(c *gin.Context) {
 	r, err := strconv.Atoi(c.PostForm("rating"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -63,7 +63,7 @@ func (mh *MovieHandler) CreateMovie(c *gin.Context) {
 
 	err = mh.movieRepository.Create(&m)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -73,13 +73,13 @@ func (mh *MovieHandler) CreateMovie(c *gin.Context) {
 func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	r, err := strconv.Atoi(c.PostForm("rating"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -93,7 +93,7 @@ func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 
 	err = mh.movieRepository.Update(&m)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -103,13 +103,13 @@ func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 func (mh *MovieHandler) DeleteMovie(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	err = mh.movieRepository.Delete(id)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -123,7 +123,7 @@ type PlayingHandler struct {
 func (ph *PlayingHandler) GetPlayings(c *gin.Context) {
 	playings, err := ph.playingRepository.Get()
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -133,25 +133,25 @@ func (ph *PlayingHandler) GetPlayings(c *gin.Context) {
 func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 	price, err := strconv.Atoi(c.PostForm("price"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	movieID, err := strconv.Atoi(c.PostForm("movie_id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	start, err := time.Parse(time.RFC3339, c.PostForm("start"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	end, err := time.Parse(time.RFC3339, c.PostForm("end"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -164,7 +164,7 @@ func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 
 	err = ph.playingRepository.Create(&p)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -174,13 +174,13 @@ func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
 func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	err = ph.playingRepository.Delete(id)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -196,7 +196,7 @@ type ViewerHandler struct {
 func (vh *ViewerHandler) GetViewers(c *gin.Context) {
 	viewers, err := vh.viewerRepository.Get()
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -206,7 +206,7 @@ func (vh *ViewerHandler) GetViewers(c *gin.Context) {
 func (vh *ViewerHandler) CreateViewer(c *gin.Context)  {
 	p, err := strconv.Atoi(c.PostForm("playing_id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -216,7 +216,7 @@ func (vh *ViewerHandler) CreateViewer(c *gin.Context)  {
 	}
 	err = vh.viewerRepository.Create(&v)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
@@ -226,13 +226,13 @@ func (vh *ViewerHandler) CreateViewer(c *gin.Context)  {
 func (vh *ViewerHandler) DeleteViewer(c *gin.Context)  {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 
 	err = vh.viewerRepository.Delete(id)
 	if err != nil {
-		go helper.SendResponseError(c, err)
+		helper.SendResponseError(c, err)
 		return
 	}
 

@@ -1,3 +1,11 @@
 package cache
 
-// TODO: create cache layer
+type Redis struct {}
+
+func (c *Redis) Get(key string, value string)  {
+	
+}
+
+func (c *Redis) Remove(key string) {
+
+}

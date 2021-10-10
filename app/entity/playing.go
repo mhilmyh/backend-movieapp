@@ -1,12 +1,16 @@
 package entity
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Playing struct {
 	gorm.Model
 	Price	int64
-	Start	string
-	End	string
+	Start	time.Time
+	End	time.Time
 	MovieID int
 	Movie Movie
 	ViewerID int

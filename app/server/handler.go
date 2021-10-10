@@ -7,6 +7,7 @@ import (
 	"app/repository"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -66,7 +67,7 @@ func (mh *MovieHandler) CreateMovie(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{"movie": m})
 }
 
 func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
@@ -96,7 +97,7 @@ func (mh *MovieHandler) UpdateMovie(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{"movie": m})
 }
 
 func (mh *MovieHandler) DeleteMovie(c *gin.Context) {
@@ -141,14 +142,51 @@ func (ph *PlayingHandler) GetPlayingViewers(c *gin.Context) {
 }
 
 func (ph *PlayingHandler) CreatePlaying(c *gin.Context) {
-	// TODO: fix this
-	err := ph.playingRepository.Create(&entity.Playing{})
+	price, err := strconv.Atoi(c.PostForm("price"))
 	if err != nil {
 		go helper.SendResponseError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	movieID, err := strconv.Atoi(c.PostForm("movie_id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	viewerID, err := strconv.Atoi(c.PostForm("viewer_id"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	start, err := time.Parse(time.RFC3339, c.PostForm("start"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	end, err := time.Parse(time.RFC3339, c.PostForm("end"))
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	p := entity.Playing{
+		Price: int64(price),
+		Start: start,
+		End: end,
+		MovieID: movieID,
+		ViewerID: viewerID,
+	}
+
+	err = ph.playingRepository.Create(&p)
+	if err != nil {
+		go helper.SendResponseError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"playing": p})
 }
 
 func (ph *PlayingHandler) CreatePlayingViewer(c *gin.Context) {
@@ -169,7 +207,6 @@ func (ph *PlayingHandler) CreatePlayingViewer(c *gin.Context) {
 }
 
 func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
-	// TODO: fix this
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		go helper.SendResponseError(c, err)
@@ -181,6 +218,8 @@ func (ph *PlayingHandler) DeletePlaying(c *gin.Context) {
 		go helper.SendResponseError(c, err)
 		return
 	}
+
+	c.JSON(http.StatusOK, gin.H{})
 }
 
 func (ph *PlayingHandler) DeletePlayingViewer(c *gin.Context) {
@@ -217,5 +256,5 @@ func (vh *ViewerHandler) GetViewers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": viewers})
+	c.JSON(http.StatusOK, gin.H{"viewers": viewers})
 }

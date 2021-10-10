@@ -16,7 +16,7 @@ func NewRoute(r *gin.RouterGroup)  {
 	r.GET("/playings", h.Playing.GetPlayings)
 	r.POST("/playings/:id/viewers", h.Playing.CreatePlayingViewer)
 	r.POST("/playings", h.Playing.CreatePlaying)
-	r.DELETE("/playings/:p/viewers/:id", h.Playing.DeletePlayingViewer)
+	r.DELETE("/playings/:id/viewers/:v", h.Playing.DeletePlayingViewer)
 	r.DELETE("/playings/:id", h.Playing.DeletePlaying)
 
 	r.GET("/viewers", h.Viewer.GetViewers)

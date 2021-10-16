@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"app/cache"
 	"app/entity"
 
 	"gorm.io/gorm"
@@ -15,7 +14,6 @@ type ViewerRepository interface {
 
 type viewerRepository struct {
 	db *gorm.DB
-	cache *cache.Redis
 }
 
 func (vr *viewerRepository) Get() (v []entity.Viewer, err error) {
@@ -33,6 +31,6 @@ func (vr *viewerRepository) Delete(id int) (err error){
 	return err	
 }
 
-func NewViewerRepository(db *gorm.DB, c *cache.Redis) ViewerRepository {
-	return &viewerRepository{db: db, cache: c}
+func NewViewerRepository(db *gorm.DB) ViewerRepository {
+	return &viewerRepository{db: db}
 }

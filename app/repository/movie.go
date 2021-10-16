@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"app/cache"
 	"app/entity"
 
 	"gorm.io/gorm"
@@ -16,7 +15,6 @@ type MovieRepository interface {
 
 type movieRepository struct {
 	db *gorm.DB
-	cache *cache.Redis
 }
 
 func (mr *movieRepository) Get() (m []entity.Movie, err error) {
@@ -39,6 +37,6 @@ func (mr *movieRepository) Delete(id int) (err error) {
 	return err
 }
 
-func NewMovieRepository(db *gorm.DB, c *cache.Redis) MovieRepository {
-	return &movieRepository{db: db, cache: c}
+func NewMovieRepository(db *gorm.DB) MovieRepository {
+	return &movieRepository{db: db}
 }

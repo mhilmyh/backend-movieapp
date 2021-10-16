@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"app/cache"
 	"app/entity"
 
 	"gorm.io/gorm"
@@ -15,7 +14,6 @@ type PlayingRepository interface {
 
 type playingRepository struct {
 	db *gorm.DB
-	cache *cache.Redis
 }
 
 func (pr *playingRepository) Get() (p []entity.Playing, err error) {
@@ -33,6 +31,6 @@ func (pr *playingRepository) Delete(id int) (err error) {
 	return err
 }
 
-func NewPlayingRepository(db *gorm.DB, c *cache.Redis) PlayingRepository {
-	return &playingRepository{db: db, cache: c}
+func NewPlayingRepository(db *gorm.DB) PlayingRepository {
+	return &playingRepository{db: db}
 }

@@ -1,7 +1,6 @@
 package server
 
 import (
-	"app/cache"
 	"app/db"
 	"app/entity"
 	"app/helper"
@@ -20,16 +19,16 @@ type Handler struct {
 	Viewer *ViewerHandler
 }
 
-func NewHandler(conn *gorm.DB, c *cache.Redis) * Handler {
+func NewHandler(conn *gorm.DB) * Handler {
 	return &Handler{
 		Movie: &MovieHandler{
-			movieRepository: repository.NewMovieRepository(conn, c),
+			movieRepository: repository.NewMovieRepository(conn),
 		},
 		Playing: &PlayingHandler{
-			playingRepository: repository.NewPlayingRepository(conn, c),
+			playingRepository: repository.NewPlayingRepository(conn),
 		},
 		Viewer: &ViewerHandler{
-			viewerRepository: repository.NewViewerRepository(conn, c),
+			viewerRepository: repository.NewViewerRepository(conn),
 		},
 	}
 }
